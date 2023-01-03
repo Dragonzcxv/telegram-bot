@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use App\Classes\Telegram;
+use App\Managers\BotManager;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ Artisan::command('inspire', function () {
 	$this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
+// Команда запуска бота
 Artisan::command('bot-start', function () {
 	$telegram = new \App\Classes\Telegram(env('TELEGRAM_BOT_TOKKEN'));
 	$work = true;
@@ -41,7 +43,7 @@ Artisan::command('bot-start', function () {
 
 		if (!empty($updates)) {
 			foreach ($updates as $update) {
-				// обрабатываем обновления
+				BotManager::processUpdate($telegram, $update);
 			}
 
 			$stats->offset = end($updates)->update_id + 1;
