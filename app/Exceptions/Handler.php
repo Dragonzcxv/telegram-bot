@@ -36,6 +36,17 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+    public function report(Throwable $e) {
+        $data = [
+            'description' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+        ];
+
+        $telegram = new \App\Classes\Telegram(env('TELEGRAM_BOT_TOKKEN'));
+        $telegram->sendMessage(env('TELEGRAM_OWNER_ID'), (string)view('report', $data));
+    }
+
     /**
      * Register the exception handling callbacks for the application.
      *
