@@ -1,16 +1,21 @@
 <?php
 
-namespace App\Managers\;
-use App\Classes\Telegram;
+namespace App\Managers;
 use App\Models\Phrases;
+use App\Models\Categories;
+use App\Managers\Abstract\Manager;
 
-class BotManager {
-	public static function processUpdate(Telegram $telegram, $update) {
+class BotManager extends Manager {
+	public function processUpdate($update) {
 		if ($update->message) {
-			$category = Phrases::where('name', $update->message->text)->first();
+			$phrase = Phrases::where('active', true)->where('name', $update->message->text)->first();
 
-			if ($category) {
-				dd($category);
+			if ($phrase) {
+				$category = Categories::where('id', $phrase->category)->first();
+				$action = $category->action;
+
+				// Вызываем метод привязанный к катеории
+				parent::$action();
 			}
 		}
 	}

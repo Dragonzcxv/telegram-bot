@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Sections;
+namespace App\Admin\Sections;
 
 use AdminColumn;
 use AdminColumnFilter;
@@ -18,13 +18,13 @@ use SleepingOwl\Admin\Form\Buttons\SaveAndCreate;
 use SleepingOwl\Admin\Section;
 
 /**
- * Class Users
+ * Class DoublePhrases
  *
- * @property \App\Models\User $model
+ * @property \App\Models\DoublePhrases $model
  *
  * @see https://sleepingowladmin.ru/#/ru/model_configuration_section
  */
-class Users extends Section implements Initializable
+class DoublePhrases extends Section implements Initializable
 {
     /**
      * @var bool
@@ -46,7 +46,7 @@ class Users extends Section implements Initializable
      */
     public function initialize()
     {
-        $this->addToNavigation()->setPriority(100)->setIcon('fas fa-users');
+        $this->addToNavigation()->setPriority(100)->setIcon('fa fa-arrow-right');
     }
 
     /**
@@ -56,9 +56,10 @@ class Users extends Section implements Initializable
      */
     public function onDisplay($payload = [])
     {
+        //dd($this);
         $columns = [
-            AdminColumn::text('id', 'id')->setWidth('50px')->setHtmlAttribute('class', 'text-center'),
-            AdminColumn::text('name', 'Name', 'created_at')
+            AdminColumn::text('id', '#')->setWidth('50px')->setHtmlAttribute('class', 'text-center'),
+            AdminColumn::link('name', 'Name', 'created_at')
                 ->setSearchCallback(function($column, $query, $search){
                     return $query
                         ->orWhere('name', 'like', '%'.$search.'%')
@@ -69,6 +70,8 @@ class Users extends Section implements Initializable
                     $query->orderBy('created_at', $direction);
                 })
             ,
+            AdminColumn::text('type', 'Type'),
+            AdminColumn::boolean('active', 'On'),
             AdminColumn::text('created_at', 'Created / updated', 'updated_at')
                 ->setWidth('160px')
                 ->setOrderable(function($query, $direction) {
@@ -99,17 +102,21 @@ class Users extends Section implements Initializable
     public function onEdit($id = null, $payload = [])
     {
         $form = AdminForm::card()->addBody([
-            AdminFormElement::text('id', 'ID')->setReadonly(true),
             AdminFormElement::columns()->addColumn([
-                AdminFormElement::text('email', 'Email')->required(),
+                AdminFormElement::text('id', 'ID')->setReadonly(true),
+                AdminFormElement::checkbox('active', 'Active'),
                 AdminFormElement::text('name', 'Name')->required(),
-                AdminFormElement::password('password', 'Password')->required()->hashWithBcrypt(),
-            ]),
+                AdminFormElement::select('type', 'Type', [
+                    'left' => 'Left',
+                    'right' => 'Right',
+                ])->required(),
+            ])
         ]);
 
         $form->getButtons()->setButtons([
             'save'  => new Save(),
             'save_and_close'  => new SaveAndClose(),
+            'save_and_create'  => new SaveAndCreate(),
             'cancel'  => (new Cancel()),
         ]);
 

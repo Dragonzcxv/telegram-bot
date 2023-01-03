@@ -23,6 +23,7 @@ Artisan::command('inspire', function () {
 // Команда запуска бота
 Artisan::command('bot-start', function () {
 	$telegram = new \App\Classes\Telegram(env('TELEGRAM_BOT_TOKKEN'));
+	$bot_manager = new \App\Managers\BotManager($telegram, env('TELEGRAM_CHAT_ID'));
 	$work = true;
 
 	while ($work) {
@@ -43,7 +44,7 @@ Artisan::command('bot-start', function () {
 
 		if (!empty($updates)) {
 			foreach ($updates as $update) {
-				BotManager::processUpdate($telegram, $update);
+				$bot_manager->processUpdate($update);
 			}
 
 			$stats->offset = end($updates)->update_id + 1;
