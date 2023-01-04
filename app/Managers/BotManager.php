@@ -8,7 +8,7 @@ use App\Managers\Abstract\Manager;
 class BotManager extends Manager {
 	public function processUpdate($update) {
 		if ($update->message) {
-			$phrase = Phrases::where('active', true)->where('name', $update->message->text)->first();
+			$phrase = Phrases::where('active', true)->where('name', mb_strtolower($update->message->text))->first();
 
 			if ($phrase) {
 				$category = Categories::where('id', $phrase->category)->first();

@@ -3,6 +3,7 @@
 namespace App\Managers\Abstract;
 use App\Classes\Telegram;
 use App\Models\DoublePhrases;
+use Illuminate\Support\Facades\Http;
 
 abstract class Manager {
 	protected Telegram $telegram;
@@ -26,5 +27,18 @@ abstract class Manager {
 			->first()->name;
 
 		$this->telegram->sendMessage($this->chat_id, "{$left} {$right}");
+	}
+
+	public function jokeAction() {
+		$content = Http::get('https://www.anekdot.ru/rss/randomu.html')->body();
+		preg_match('/\'\[.+\]\'/', $content, $match);
+	
+		$text = explode('\",\\' , $match[0])[0];
+	
+		$text = str_replace('\",\\', '', $text);
+		$text = str_replace('<br>', "\n", $text);
+		$text = ltrim($text, '\'[\\"');
+
+		$this->telegram->sendMessage($this->chat_id, $text);
 	}
 }
