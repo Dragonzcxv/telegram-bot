@@ -15,6 +15,7 @@ class AdminSectionsServiceProvider extends ServiceProvider
         \App\Models\Categories::class => 'App\Admin\Sections\Categories',
         \App\Models\Phrases::class => 'App\Admin\Sections\Phrases',
         \App\Models\DoublePhrases::class => 'App\Admin\Sections\DoublePhrases',
+        \App\Models\DayPictures::class => 'App\Admin\Sections\DayPictures'
     ];
 
     /**

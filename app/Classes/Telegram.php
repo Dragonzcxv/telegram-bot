@@ -51,4 +51,19 @@ class Telegram {
 			'timeout' => $timeout,
 		])->object()->result;
 	}
+	
+	/**
+	 * Отправляет картинку в указаный чат
+	 *
+	 * @param  int $chat_id id чата
+	 * @param  string $image raw string image
+	 * @param  string $image_name имя картинки
+	 * @return void
+	 */
+	public function pushImage(int $chat_id, string $image, string $image_name) {
+		Http::attach('photo', $image, $image_name)
+			->post("https://api.tlgr.org/bot{$this->tokken}/sendPhoto", [
+				'chat_id' => $chat_id,
+			]);
+	}
 }

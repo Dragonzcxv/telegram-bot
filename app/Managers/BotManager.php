@@ -3,6 +3,7 @@
 namespace App\Managers;
 use App\Models\Phrases;
 use App\Models\Categories;
+use App\Models\DayPictures;
 use App\Managers\Abstract\Manager;
 
 /**
@@ -70,5 +71,16 @@ class BotManager extends Manager {
 		$stats = parent::statsGet();
 		$stats->work = false;
 		parent::statsUpdate($stats);
+	}
+	
+	/**
+	 * Отправляет рандомную картинку привязанную к текущему дню недели
+	 *
+	 * @param  stirng $day день недели
+	 * @return void
+	 */
+	public function pushDayImage(string $day) {
+		$image_path = DayPictures::where('active', true)->where('day', $day)->first()->image;
+		$this->telegram->pushImage($this->chat_id, \Storage::disk('public')->get($image_path), basename($image_path));
 	}
 }
