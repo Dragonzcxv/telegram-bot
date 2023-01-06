@@ -5,24 +5,50 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Artisan;
 
 
+/**
+ * Класс работы с Telegram
+ */
 class Telegram {
 	protected string $tokken;
-	protected $index=0;
-
+	
+	/**
+	 * __construct
+	 *
+	 * @param  string $tokken Токен бота
+	 * @return void
+	 */
 	public function __construct(string $tokken)
 	{
 		$this->tokken = $tokken;
 	}
-
-	public function sendMessage($chat_id, $message) {
+	
+	/**
+	 * Отправка собщения по указаному id беседы
+	 *
+	 * @param  int $chat_id id беседы
+	 * @param  string $message сообщение
+	 * @param  string $parse_mode метод парсинга(html\Markdown\text)
+	 * @return void
+	 */
+	public function sendMessage(int $chat_id, string $message, string $parse_mode = "html") {
 		Http::post("https://api.tlgr.org/bot{$this->tokken}/sendMessage", [
 			'chat_id' => $chat_id,
 			'text' => $message,
-			'parse_mode' => 'html',
+			'parse_mode' => $parse_mode,
 		]);
 	}
-
-	public function getUpdates($data) {
-		return Http::timeout(100)->post("https://api.tlgr.org/bot{$this->tokken}/getUpdates", $data)->object()->result;
+	
+	/**
+	 * Возвращает массив обновлений
+	 *
+	 * @param  int $offset id обновления с которого нужно вернуть результат
+	 * @param  int $timeout задержка ответа(long polling)
+	 * @return array
+	 */
+	public function getUpdates($offset, $timeout) {
+		return Http::timeout($offset + 20)->post("https://api.tlgr.org/bot{$this->tokken}/getUpdates", [
+			'offset' => $offset,
+			'timeout' => $timeout,
+		])->object()->result;
 	}
 }
