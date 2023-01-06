@@ -80,7 +80,7 @@ class BotManager extends Manager {
 	 * @return void
 	 */
 	public function pushDayImage(string $day) {
-		$image_path = DayPictures::where('active', true)->where('day', $day)->first()->image;
+		$image_path = DayPictures::where('active', true)->where('day', $day)->inRandomOrder()->first()->image;
 		$this->telegram->pushImage($this->chat_id, \Storage::disk('public')->get($image_path), basename($image_path));
 	}
 }
