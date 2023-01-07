@@ -17,7 +17,7 @@ class BotManager extends Manager {
 	 * @return void
 	 */
 	protected function processUpdate($update) {
-		if ($update->message) {
+		if (isset($update->message) && isset($update->message->text)) {
 			$phrase = Phrases::where('active', true)->where('name', mb_strtolower($update->message->text))->first();
 
 			if ($phrase) {
