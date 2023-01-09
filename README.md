@@ -30,10 +30,10 @@
 При возникновении php ошибки будет отправленно сообщение в чат владельца.
 
 # env переменные #
-`TELEGRAM_BOT_TOKKEN` - Токен телеграм бота
-`TELEGRAM_OWNER_ID` - id владельца бота(туда будут приходить ошибки)
-`TELEGRAM_CHAT_ID` - id беседы в которую будет отвечать бот
-`UPDATES_TIMEOUT` - задержка ответа на обновления Telegram (long polling)
+`TELEGRAM_BOT_TOKKEN` - Токен телеграм бота<br/>
+`TELEGRAM_OWNER_ID` - id владельца бота(туда будут приходить ошибки)<br/>
+`TELEGRAM_CHAT_ID` - id беседы в которую будет отвечать бот<br/>
+`UPDATES_TIMEOUT` - задержка ответа на обновления Telegram (long polling)<br/>
 
 # Команды artisan
 Путь: `routes/console.php`
