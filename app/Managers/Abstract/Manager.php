@@ -65,7 +65,8 @@ abstract class Manager {
 	protected function statsInit() {
 		$data = [
 			'offset' => 0, // id последнего обновления
-			'work' => true // параметр работы бота
+			'work' => true, // параметр работы бота
+			'date' => 0, // дата работы, обновляется каждый цикл
 		];
 
 		\file_put_contents($this->stats_path, \json_encode($data));
@@ -121,6 +122,7 @@ abstract class Manager {
 	
 		$text = str_replace('\",\\', '', $text);
 		$text = str_replace('<br>', "\n", $text);
+		$text = str_replace('\\\\\\', "", $text);
 		$text = ltrim($text, '\'[\\"');
 
 		$this->telegram->sendMessage($this->chat_id, $text);

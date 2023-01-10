@@ -17,7 +17,11 @@ class BotManager extends Manager {
 	 * @return void
 	 */
 	protected function processUpdate($update) {
-		if (isset($update->message) && isset($update->message->text)) {
+		if (
+			isset($update->message)
+			&& isset($update->message->text)
+			&& $update->message->chat->id == $this->chat_id )
+		{
 			$phrase = Phrases::where('active', true)->where('name', mb_strtolower($update->message->text))->first();
 
 			if ($phrase) {
@@ -56,8 +60,11 @@ class BotManager extends Manager {
 	
 				// Записываем id следующего обновления
 				$stats->offset = end($updates)->update_id + 1;
-				parent::statsUpdate($stats);
 			}
+
+			// Обновляем состояние
+			$stats->date = date("F j, Y, g:i a");
+			parent::statsUpdate($stats);
 		}
 	}
 	
