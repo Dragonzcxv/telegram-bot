@@ -61,10 +61,10 @@ abstract class Manager {
 	/**
 	 * Абстрактный метод обработки обновления через хуки
 	 *
-	 * @param  object $updates Обновление бота
+	 * @param  object $update Обновление бота
 	 * @return void
 	 */
-	abstract public function hookProcess($updates);
+	abstract public function hookProcess($update);
 
 	/**
 	 * Cоздаёт файла состояния бота

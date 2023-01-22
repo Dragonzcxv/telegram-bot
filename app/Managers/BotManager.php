@@ -40,16 +40,14 @@ class BotManager extends Manager {
 	 * @param  object $update
 	 * @return void
 	 */
-	public function hookProcess($updates) {
+	public function hookProcess($update) {
 		$stats = parent::statsGet();
 
-		if ($stats->hook_mode && !empty($updates)) {
-			foreach ($updates as $update) {
-				$this->processUpdate($update);
-			}
+		if ($stats->hook_mode && !empty($update)) {
+		    $this->processUpdate($update);
 
-			// Записываем id следующего обновления
-			$stats->offset = end($updates)->update_id + 1;
+		    // Записываем id следующего обновления
+		    $stats->offset = $update->update_id + 1;
 		} else {
 			$this->telegram->sendMessage(env('TELEGRAM_OWNER_ID'), 'Бот работает не через хуки');
 		}

@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Classes\Telegram;
+use App\Managers\BotManager;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/bot', function($result) {
+Route::post('/bot', function(Request $request) {
+	$result = json_decode(json_encode($request->post()));
 	$telegram = new Telegram(env('TELEGRAM_BOT_TOKKEN'));
 	$stats_path = base_path() . "/public/temp/stats.json";
 	$bot_manager = new BotManager($telegram, env('TELEGRAM_CHAT_ID'), $stats_path, env('UPDATES_TIMEOUT'));
 	$bot_manager->hookProcess($result);
 });
+
