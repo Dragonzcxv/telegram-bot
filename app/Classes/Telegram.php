@@ -46,7 +46,7 @@ class Telegram {
 	 * @return array
 	 */
 	public function getUpdates($offset, $timeout) {
-		return Http::timeout($offset + 20)->post("https://api.tlgr.org/bot{$this->tokken}/getUpdates", [
+		return Http::timeout($timeout + 20)->post("https://api.tlgr.org/bot{$this->tokken}/getUpdates", [
 			'offset' => $offset,
 			'timeout' => $timeout,
 		])->object()->result;

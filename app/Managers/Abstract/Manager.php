@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Managers\Abstract;
+
+use App\Actions\DoublePhrasesAction;
+use App\Actions\JokeAction;
 use App\Classes\Telegram;
-use App\Models\DoublePhrases;
-use Illuminate\Support\Facades\Http;
 
 /**
  * Абстрактный класс менджера работы бота
@@ -44,19 +45,27 @@ abstract class Manager {
 	abstract protected function processUpdate($update);
 	
 	/**
-	 * Абстрактаный метод запуска бота
+	 * Абстрактаный метод запуска бота(Работа через Long Polling)
 	 *
 	 * @return void
 	 */
-	abstract protected function start();
+	abstract public function start();
 	
 	/**
-	 * Абстрактный метод остановки бота
+	 * Абстрактный метод остановки бота(Работа через Long Polling)
 	 *
 	 * @return void
 	 */
-	abstract protected function stop();
+	abstract public function stop();
 	
+	/**
+	 * Абстрактный метод обработки обновления через хуки
+	 *
+	 * @param  object $updates Обновление бота
+	 * @return void
+	 */
+	abstract public function hookProcess($updates);
+
 	/**
 	 * Cоздаёт файла состояния бота
 	 *
@@ -65,8 +74,9 @@ abstract class Manager {
 	protected function statsInit() {
 		$data = [
 			'offset' => 0, // id последнего обновления
-			'work' => true, // параметр работы бота
+			'work' => true, // параметр работы бота(не имеет значения при работе через хуки)
 			'date' => 0, // дата работы, обновляется каждый цикл
+			'hook_mode' => false, // Вариант работы через хуки
 		];
 
 		\file_put_contents($this->stats_path, \json_encode($data));
@@ -77,7 +87,7 @@ abstract class Manager {
 	 *
 	 * @return object
 	 */
-	public function statsGet() {
+	protected function statsGet() {
 		return \json_decode(\file_get_contents($this->stats_path));
 	}
 
@@ -87,7 +97,7 @@ abstract class Manager {
 	 * @param  array $data параметры сотояния бота
 	 * @return void
 	 */
-	public function statsUpdate($data) {
+	protected function statsUpdate($data) {
 		\file_put_contents($this->stats_path, \json_encode($data));
 	}
 	
@@ -97,16 +107,7 @@ abstract class Manager {
 	 * @return void
 	 */
 	public function doublePhrasesAction() {
-		$left = DoublePhrases::where('active', true)
-			->where('type', 'left')
-			->inRandomOrder()
-			->first()->name;
-		$right = DoublePhrases::where('active', true)
-			->where('type', 'right')
-			->inRandomOrder()
-			->first()->name;
-
-		$this->telegram->sendMessage($this->chat_id, "{$left} {$right}");
+		DoublePhrasesAction::action($this->telegram, $this->chat_id);
 	}
 	
 	/**
@@ -115,16 +116,6 @@ abstract class Manager {
 	 * @return void
 	 */
 	public function jokeAction() {
-		$content = Http::get('https://www.anekdot.ru/rss/randomu.html')->body();
-		preg_match('/\'\[.+\]\'/', $content, $match);
-	
-		$text = explode('\",\\' , $match[0])[0];
-	
-		$text = str_replace('\",\\', '', $text);
-		$text = str_replace('<br>', "\n", $text);
-		$text = str_replace('\\\\\\', "", $text);
-		$text = ltrim($text, '\'[\\"');
-
-		$this->telegram->sendMessage($this->chat_id, $text);
+		JokeAction::action($this->telegram, $this->chat_id);
 	}
 }

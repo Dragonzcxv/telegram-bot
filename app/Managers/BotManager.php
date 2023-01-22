@@ -35,7 +35,28 @@ class BotManager extends Manager {
 	}
 	
 	/**
-	 * Запускает бота
+	 * Обрабатывает обновления бота в режиме hook_mode
+	 *
+	 * @param  object $update
+	 * @return void
+	 */
+	public function hookProcess($updates) {
+		$stats = parent::statsGet();
+
+		if ($stats->hook_mode && !empty($updates)) {
+			foreach ($updates as $update) {
+				$this->processUpdate($update);
+			}
+
+			// Записываем id следующего обновления
+			$stats->offset = end($updates)->update_id + 1;
+		} else {
+			$this->telegram->sendMessage(env('TELEGRAM_OWNER_ID'), 'Бот работает не через хуки');
+		}
+	}
+	
+	/**
+	 * Запускает бота(Работа через Long Polling)
 	 *
 	 * @return void
 	 */
@@ -69,7 +90,7 @@ class BotManager extends Manager {
 	}
 	
 	/**
-	 * Останавливает работу бота
+	 * Останавливает работу бота(Работа через Long Polling)
 	 *
 	 * @return void
 	 */
