@@ -24,6 +24,13 @@ class Kernel extends ConsoleKernel
             $bot_manager = new BotManager($telegram, env('TELEGRAM_CHAT_ID'), $stats_path, env('UPDATES_TIMEOUT'));
             $bot_manager->pushDayImage(\mb_strtolower(date('l')));
         })->dailyAt('9:00');
+
+        $schedule->call(function () {
+            $telegram = new Telegram(env('TELEGRAM_BOT_TOKKEN'));
+            $stats_path = base_path() . "/public/temp/stats.json";
+            $bot_manager = new BotManager($telegram, env('TELEGRAM_CHAT_ID'), $stats_path, env('UPDATES_TIMEOUT'));
+            $bot_manager->pushWeatherWithImage();
+        })->dailyAt('7:30');
     }
 
     /**

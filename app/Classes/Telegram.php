@@ -2,8 +2,6 @@
 
 namespace App\Classes;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Artisan;
-
 
 /**
  * Класс работы с Telegram

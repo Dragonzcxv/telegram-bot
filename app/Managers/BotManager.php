@@ -5,6 +5,8 @@ use App\Models\Phrases;
 use App\Models\Categories;
 use App\Models\DayPictures;
 use App\Managers\Abstract\Manager;
+use App\Models\Gallery;
+use App\Classes\OpenWeather;
 
 /**
  * Класс менеджера бота
@@ -107,6 +109,28 @@ class BotManager extends Manager {
 	 */
 	public function pushDayImage(string $day) {
 		$image_path = DayPictures::where('active', true)->where('day', $day)->inRandomOrder()->first()->image;
+		$this->telegram->pushImage($this->chat_id, \Storage::disk('public')->get($image_path), basename($image_path));
+	}
+	
+	/**
+	 * Отправляет сведения о погоде вместе с рандомной картинкой
+	 *
+	 * @return void
+	 */
+	public function pushWeatherWithImage() {
+		$image_path = Gallery::where('active', true)->inRandomOrder()->first()->image;
+		$weather_api = new OpenWeather(env('OPEN_WEATHER_TOKKEN'), env('WEATHER_LANG'));
+		$weather = $weather_api->getWeather(env('CITY_LAT'), env('CITY_LON'));
+		$temp = floor($weather['main']['temp']);
+		$feels_like = floor($weather['main']['feels_like']);
+
+		$this->telegram->sendMessage($this->chat_id, "
+			Время погоды на сегодня!\n
+			На улице сейчас {$weather['weather'][0]['description']} \n
+			Температура: {$temp}°C\n
+			Ощущается как {$feels_like}°C\n
+			На этом все, берегите себя и своих близких
+		");
 		$this->telegram->pushImage($this->chat_id, \Storage::disk('public')->get($image_path), basename($image_path));
 	}
 }
