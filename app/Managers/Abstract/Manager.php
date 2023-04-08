@@ -14,7 +14,7 @@ abstract class Manager {
 	protected int $chat_id;
 	protected string $stats_path;
 	protected int $timeout;
-	
+
 	/**
 	 * __construct
 	 *
@@ -35,7 +35,7 @@ abstract class Manager {
 			$this->statsInit();
 		}
 	}
-	
+
 	/**
 	 * Абстратный метод обработки обновлений бота
 	 *
@@ -43,21 +43,21 @@ abstract class Manager {
 	 * @return void
 	 */
 	abstract protected function processUpdate($update);
-	
+
 	/**
 	 * Абстрактаный метод запуска бота(Работа через Long Polling)
 	 *
 	 * @return void
 	 */
 	abstract public function start();
-	
+
 	/**
 	 * Абстрактный метод остановки бота(Работа через Long Polling)
 	 *
 	 * @return void
 	 */
 	abstract public function stop();
-	
+
 	/**
 	 * Абстрактный метод обработки обновления через хуки
 	 *
@@ -81,7 +81,7 @@ abstract class Manager {
 
 		\file_put_contents($this->stats_path, \json_encode($data));
 	}
-	
+
 	/**
 	 * Возвращает массив состояния бота
 	 *
@@ -100,7 +100,7 @@ abstract class Manager {
 	protected function statsUpdate($data) {
 		\file_put_contents($this->stats_path, \json_encode($data));
 	}
-	
+
 	/**
 	 * Action, который отправляет в чат фразу составленную из таблицы double_phrases
 	 *
@@ -109,7 +109,7 @@ abstract class Manager {
 	public function doublePhrasesAction() {
 		DoublePhrasesAction::action($this->telegram, $this->chat_id);
 	}
-	
+
 	/**
 	 * Action, который отправляет в чат рандомный анекдот
 	 *

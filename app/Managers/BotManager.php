@@ -11,7 +11,7 @@ use App\Classes\OpenWeather;
 /**
  * Класс менеджера бота
  */
-class BotManager extends Manager {	
+class BotManager extends Manager {
 	/**
 	 * Обработка обновления бота
 	 *
@@ -35,7 +35,7 @@ class BotManager extends Manager {
 			}
 		}
 	}
-	
+
 	/**
 	 * Обрабатывает обновления бота в режиме hook_mode
 	 *
@@ -46,15 +46,15 @@ class BotManager extends Manager {
 		$stats = parent::statsGet();
 
 		if ($stats->hook_mode && !empty($update)) {
-		    $this->processUpdate($update);
+			$this->processUpdate($update);
 
-		    // Записываем id следующего обновления
-		    $stats->offset = $update->update_id + 1;
+			// Записываем id следующего обновления
+			$stats->offset = $update->update_id + 1;
 		} else {
 			$this->telegram->sendMessage(env('TELEGRAM_OWNER_ID'), 'Бот работает не через хуки');
 		}
 	}
-	
+
 	/**
 	 * Запускает бота(Работа через Long Polling)
 	 *
@@ -72,13 +72,13 @@ class BotManager extends Manager {
 
 			// Повторно берём состояние на случай смены work
 			$stats = parent::statsGet();
-	
+
 			// Бот обработает последние обновления в случае смены work
 			if (!empty($updates)) {
 				foreach ($updates as $update) {
 					$this->processUpdate($update);
 				}
-	
+
 				// Записываем id следующего обновления
 				$stats->offset = end($updates)->update_id + 1;
 			}
@@ -88,7 +88,7 @@ class BotManager extends Manager {
 			parent::statsUpdate($stats);
 		}
 	}
-	
+
 	/**
 	 * Останавливает работу бота(Работа через Long Polling)
 	 *
@@ -100,7 +100,7 @@ class BotManager extends Manager {
 		$stats->work = false;
 		parent::statsUpdate($stats);
 	}
-	
+
 	/**
 	 * Отправляет рандомную картинку привязанную к текущему дню недели
 	 *
@@ -111,7 +111,7 @@ class BotManager extends Manager {
 		$image_path = DayPictures::where('active', true)->where('day', $day)->inRandomOrder()->first()->image;
 		$this->telegram->pushImage($this->chat_id, \Storage::disk('public')->get($image_path), basename($image_path));
 	}
-	
+
 	/**
 	 * Отправляет сведения о погоде вместе с рандомной картинкой
 	 *

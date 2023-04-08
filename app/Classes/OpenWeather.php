@@ -11,7 +11,7 @@ class OpenWeather {
 	protected string $api_url = 'https://api.openweathermap.org/data/2.5/weather';
 	protected string $tokken;
 	protected string $lang;
-	
+
 	/**
 	 * __construct
 	 *
@@ -24,7 +24,7 @@ class OpenWeather {
 		$this->tokken = $tokken;
 		$this->lang = $lang;
 	}
-	
+
 	/**
 	 * Возвращает сведения о погоде по переданным координатам
 	 *

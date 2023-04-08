@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DayPictures extends Model {
-    use HasFactory;
+	use HasFactory;
 }

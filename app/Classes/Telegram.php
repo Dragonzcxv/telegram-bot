@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
  */
 class Telegram {
 	protected string $tokken;
-	
+
 	/**
 	 * __construct
 	 *
@@ -19,7 +19,7 @@ class Telegram {
 	{
 		$this->tokken = $tokken;
 	}
-	
+
 	/**
 	 * Отправка собщения по указаному id беседы
 	 *
@@ -35,7 +35,7 @@ class Telegram {
 			'parse_mode' => $parse_mode,
 		]);
 	}
-	
+
 	/**
 	 * Возвращает массив обновлений
 	 *
@@ -49,7 +49,7 @@ class Telegram {
 			'timeout' => $timeout,
 		])->object()->result;
 	}
-	
+
 	/**
 	 * Отправляет картинку в указаный чат
 	 *

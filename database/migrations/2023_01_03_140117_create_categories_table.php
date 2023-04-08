@@ -6,28 +6,28 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Создание таблицы categories
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('name');
-            $table->boolean('active');
-        });
-    }
+	/**
+	 * Создание таблицы categories
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('categories', function (Blueprint $table) {
+			$table->id();
+			$table->timestamps();
+			$table->string('name');
+			$table->boolean('active');
+		});
+	}
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('categories');
-    }
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::dropIfExists('categories');
+	}
 };
