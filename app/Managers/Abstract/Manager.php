@@ -6,6 +6,8 @@ use App\Actions\DoublePhrasesAction;
 use App\Actions\JokeAction;
 use App\Classes\Telegram;
 
+use Illuminate\Support\Facades\Storage;
+
 /**
  * Абстрактный класс менджера работы бота
  */
@@ -31,7 +33,7 @@ abstract class Manager {
 		$this->timeout = $timeout;
 
 		// Создаём файл состояния бота
-		if (!\file_exists($stats_path)) {
+		if (!Storage::disk('public')->exists($this->stats_path)) {
 			$this->statsInit();
 		}
 	}
@@ -79,7 +81,7 @@ abstract class Manager {
 			'hook_mode' => false, // Вариант работы через хуки
 		];
 
-		\file_put_contents($this->stats_path, \json_encode($data));
+		dump(Storage::disk('public')->put($this->stats_path, \json_encode($data)));
 	}
 	
 	/**
@@ -88,7 +90,7 @@ abstract class Manager {
 	 * @return object
 	 */
 	protected function statsGet() {
-		return \json_decode(\file_get_contents($this->stats_path));
+		return \json_decode(Storage::disk('public')->get($this->stats_path));
 	}
 
 	/**
@@ -98,7 +100,7 @@ abstract class Manager {
 	 * @return void
 	 */
 	protected function statsUpdate($data) {
-		\file_put_contents($this->stats_path, \json_encode($data));
+		Storage::disk('public')->put($this->stats_path, \json_encode($data));
 	}
 	
 	/**
