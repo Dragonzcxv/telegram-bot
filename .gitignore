@@ -18,3 +18,4 @@ yarn-error.log
 /.vscode
 /public/temp/*
 /public/images
+/linter/vendor

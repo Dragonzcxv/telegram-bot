@@ -36,7 +36,8 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    public function report(Throwable $e) {
+    public function report(Throwable $e)
+    {
         $data = [
             'description' => $e->getMessage(),
             'file' => $e->getFile(),

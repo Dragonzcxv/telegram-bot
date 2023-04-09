@@ -59,23 +59,20 @@ class Users extends Section implements Initializable
         $columns = [
             AdminColumn::text('id', 'id')->setWidth('50px')->setHtmlAttribute('class', 'text-center'),
             AdminColumn::text('name', 'Name', 'created_at')
-                ->setSearchCallback(function($column, $query, $search){
+                ->setSearchCallback(function ($column, $query, $search) {
                     return $query
-                        ->orWhere('name', 'like', '%'.$search.'%')
-                        ->orWhere('created_at', 'like', '%'.$search.'%')
-                    ;
+                        ->orWhere('name', 'like', '%' . $search . '%')
+                        ->orWhere('created_at', 'like', '%' . $search . '%');
                 })
-                ->setOrderable(function($query, $direction) {
+                ->setOrderable(function ($query, $direction) {
                     $query->orderBy('created_at', $direction);
-                })
-            ,
+                }),
             AdminColumn::text('created_at', 'Created / updated', 'updated_at')
                 ->setWidth('160px')
-                ->setOrderable(function($query, $direction) {
+                ->setOrderable(function ($query, $direction) {
                     $query->orderBy('updated_at', $direction);
                 })
-                ->setSearchable(false)
-            ,
+                ->setSearchable(false),
         ];
 
         $display = AdminDisplay::datatables()
@@ -84,8 +81,7 @@ class Users extends Section implements Initializable
             ->setDisplaySearch(true)
             ->paginate(25)
             ->setColumns($columns)
-            ->setHtmlAttribute('class', 'table-primary table-hover')
-        ;
+            ->setHtmlAttribute('class', 'table-primary table-hover');
 
         return $display;
     }

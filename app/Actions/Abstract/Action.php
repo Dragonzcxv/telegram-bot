@@ -7,6 +7,7 @@ use App\Classes\Telegram;
 /**
  * Абстрактный класс Экшенов
  */
-abstract class Action {
-	public abstract static function action(Telegram $telegram, int $chat_id);
+abstract class Action
+{
+    abstract public static function action(Telegram $telegram, int $chat_id);
 }

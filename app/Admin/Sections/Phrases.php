@@ -61,27 +61,24 @@ class Phrases extends Section implements Initializable
         $columns = [
             AdminColumn::text('id', '#')->setWidth('50px')->setHtmlAttribute('class', 'text-center'),
             AdminColumn::link('name', 'Name', 'created_at')
-                ->setSearchCallback(function($column, $query, $search){
+                ->setSearchCallback(function ($column, $query, $search) {
                     return $query
-                        ->orWhere('name', 'like', '%'.$search.'%')
-                        ->orWhere('created_at', 'like', '%'.$search.'%')
-                    ;
+                        ->orWhere('name', 'like', '%' . $search . '%')
+                        ->orWhere('created_at', 'like', '%' . $search . '%');
                 })
-                ->setOrderable(function($query, $direction) {
+                ->setOrderable(function ($query, $direction) {
                     $query->orderBy('created_at', $direction);
-                })
-            ,
-            AdminColumn::custom('Category', function($element) {
+                }),
+            AdminColumn::custom('Category', function ($element) {
                 return Categories::where('id', $element->category)->first()->name;
             }),
             AdminColumn::boolean('active', 'On'),
             AdminColumn::text('created_at', 'Created / updated', 'updated_at')
                 ->setWidth('160px')
-                ->setOrderable(function($query, $direction) {
+                ->setOrderable(function ($query, $direction) {
                     $query->orderBy('updated_at', $direction);
                 })
-                ->setSearchable(false)
-            ,
+                ->setSearchable(false),
         ];
 
         $display = AdminDisplay::datatables()
@@ -90,19 +87,17 @@ class Phrases extends Section implements Initializable
             ->setDisplaySearch(true)
             ->paginate(25)
             ->setColumns($columns)
-            ->setHtmlAttribute('class', 'table-primary table-hover')
-        ;
+            ->setHtmlAttribute('class', 'table-primary table-hover');
 
         $display->setColumnFilters([
             AdminColumnFilter::select()
                 ->setModelForOptions(Categories::class, 'name')
-                ->setLoadOptionsQueryPreparer(function($element, $query) {
+                ->setLoadOptionsQueryPreparer(function ($element, $query) {
                     return $query;
                 })
                 ->setDisplay('name')
                 ->setColumnName('category')
-                ->setPlaceholder('All categories')
-            ,
+                ->setPlaceholder('All categories'),
         ]);
         $display->getColumnFilters()->setPlacement('card.heading');
 
@@ -123,7 +118,7 @@ class Phrases extends Section implements Initializable
                 AdminFormElement::checkbox('active', 'Active'),
                 AdminFormElement::text('name', 'Name')->required(),
                 AdminFormElement::select('category', 'Category', new \App\Models\Categories())->setDisplay('name')
-                    ->setLoadOptionsQueryPreparer(function($element, $quary) {
+                    ->setLoadOptionsQueryPreparer(function ($element, $quary) {
                         return $quary->where('active', true);
                     })->required(),
             ])

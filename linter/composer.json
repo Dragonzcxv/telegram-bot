@@ -1,0 +1,11 @@
+{
+    "require": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "sirbrillig/phpcs-variable-analysis": "^2.11"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
