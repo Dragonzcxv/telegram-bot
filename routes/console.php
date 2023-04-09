@@ -23,7 +23,7 @@ Artisan::command('inspire', function () {
 // Команда запуска бота
 Artisan::command('bot-start', function () {
 	$telegram = new Telegram(env('TELEGRAM_BOT_TOKKEN'));
-	$stats_path = base_path() . "/public/temp/stats.json";
+	$stats_path = "temp/stats.json";
 	$bot_manager = new BotManager($telegram, env('TELEGRAM_CHAT_ID'), $stats_path, env('UPDATES_TIMEOUT'));
 	$bot_manager->start();
 })->purpose('Запускает бота, выполняется мониторинг и обработка обновлений');
@@ -31,7 +31,7 @@ Artisan::command('bot-start', function () {
 // Команда остановки бота
 Artisan::command('bot-stop', function () {
 	$telegram = new Telegram(env('TELEGRAM_BOT_TOKKEN'));
-	$stats_path = base_path() . "/public/temp/stats.json";
+	$stats_path = "temp/stats.json";
 	$bot_manager = new BotManager($telegram, env('TELEGRAM_CHAT_ID'), $stats_path, env('UPDATES_TIMEOUT'));
 	$bot_manager->stop();
 })->purpose('Останавливает работу бота');
