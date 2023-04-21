@@ -28,6 +28,7 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_USER: ${DB_USERNAME}
     volumes:
+      - ./storage/logs/sql/:/var/log/mysql/
       - ./docker/sql/cfg/:/etc/mysql/conf.d
 
   nginx:

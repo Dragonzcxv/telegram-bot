@@ -25,6 +25,9 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+ADD ./cfg/php/custom.ini /usr/local/etc/php/conf.d
+ADD ./cfg/phpfpm/custom.conf /usr/local/etc/php-fpm.d
+
 RUN groupadd --gid $gid $uname
 RUN useradd -G www-data,root -s /bin/bash --uid $uid --gid $gid $uname
 
