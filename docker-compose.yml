@@ -30,6 +30,8 @@ services:
     volumes:
       - ./storage/logs/sql/:/var/log/mysql/
       - ./docker/sql/cfg/:/etc/mysql/conf.d
+    networks:
+      -  telegrambot
 
   nginx:
     image: nginx:alpine
