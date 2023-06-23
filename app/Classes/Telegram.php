@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Http;
 class Telegram
 {
     protected string $tokken;
+    protected string $url = "https://api.telegram.org";
 
     /**
      * __construct
@@ -32,7 +33,7 @@ class Telegram
      */
     public function sendMessage(int $chat_id, string $message, string $parse_mode = "html")
     {
-        Http::post("https://api.tlgr.org/bot{$this->tokken}/sendMessage", [
+        Http::post("{$this->url}/bot{$this->tokken}/sendMessage", [
             'chat_id' => $chat_id,
             'text' => $message,
             'parse_mode' => $parse_mode,
@@ -48,7 +49,7 @@ class Telegram
      */
     public function getUpdates($offset, $timeout)
     {
-        return Http::timeout($timeout + 20)->post("https://api.tlgr.org/bot{$this->tokken}/getUpdates", [
+        return Http::timeout($timeout + 20)->post("{$this->url}/bot{$this->tokken}/getUpdates", [
             'offset' => $offset,
             'timeout' => $timeout,
         ])->object()->result;
@@ -65,7 +66,7 @@ class Telegram
     public function pushImage(int $chat_id, string $image, string $image_name)
     {
         Http::attach('photo', $image, $image_name)
-            ->post("https://api.tlgr.org/bot{$this->tokken}/sendPhoto", [
+            ->post("{$this->url}/bot{$this->tokken}/sendPhoto", [
                 'chat_id' => $chat_id,
             ]);
     }
