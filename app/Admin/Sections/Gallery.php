@@ -66,6 +66,7 @@ class Gallery extends Section implements Initializable
                 ->setOrderable(function ($query, $direction) {
                     $query->orderBy('created_at', $direction);
                 }),
+            AdminColumn::text('send_count', 'Send count')->setWidth('160px'),
             AdminColumn::boolean('active', 'On'),
             AdminColumn::text('created_at', 'Created / updated', 'updated_at')
                 ->setWidth('160px')
@@ -97,6 +98,7 @@ class Gallery extends Section implements Initializable
         $form = AdminForm::card()->addBody([
             AdminFormElement::columns()->addColumn([
                 AdminFormElement::text('id', 'ID')->setReadonly(true),
+                AdminFormElement::number('send_count', 'Send count'),
                 AdminFormElement::checkbox('active', 'Active'),
                 AdminFormElement::text('name', 'Name')->required(),
                 AdminFormElement::image('image', 'Image')->required()

@@ -126,7 +126,8 @@ class BotManager extends Manager
      */
     public function pushWeatherWithImage()
     {
-        $image_path = Gallery::where('active', true)->inRandomOrder()->first()->image;
+        $item = Gallery::where('active', true)->orderBy('send_count', 'asc')->first();
+
         $weather_api = new OpenWeather(env('OPEN_WEATHER_TOKKEN'), env('WEATHER_LANG'));
         $weather = $weather_api->getWeather(env('CITY_LAT'), env('CITY_LON'));
         $temp = floor($weather['main']['temp']);
@@ -139,6 +140,10 @@ class BotManager extends Manager
 			Ощущается как {$feels_like}°C\n
 			На этом все, берегите себя и своих близких
 		");
-        $this->telegram->pushImage($this->chat_id, \Storage::disk('public')->get($image_path), basename($image_path));
+        $this->telegram->pushImage($this->chat_id, \Storage::disk('public')->get($item->image), basename($item->image));
+
+        // Увеличиваем датчик отправки у картинки на 1
+        $item->send_count += 1;
+        $item->save();
     }
 }
