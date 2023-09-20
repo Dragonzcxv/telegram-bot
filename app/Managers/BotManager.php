@@ -74,7 +74,6 @@ class BotManager extends Manager
         while ($stats->work) {
             $stats = parent::statsGet();
             $updates = $this->telegram->getUpdates($stats->offset, $this->timeout);
-
             // Повторно берём состояние на случай смены work
             $stats = parent::statsGet();
 
