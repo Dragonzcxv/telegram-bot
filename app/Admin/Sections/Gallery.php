@@ -99,7 +99,7 @@ class Gallery extends Section implements Initializable
             AdminFormElement::columns()->addColumn([
                 AdminFormElement::text('id', 'ID')->setReadonly(true),
                 AdminFormElement::number('send_count', 'Send count')->setDefaultValue(0)->required(),
-                AdminFormElement::checkbox('active', 'Active'),
+                AdminFormElement::checkbox('active', 'Active')->setDefaultValue(true),
                 AdminFormElement::text('name', 'Name')->required(),
                 AdminFormElement::image('image', 'Image')->required()
             ])
