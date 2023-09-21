@@ -98,7 +98,7 @@ class Gallery extends Section implements Initializable
         $form = AdminForm::card()->addBody([
             AdminFormElement::columns()->addColumn([
                 AdminFormElement::text('id', 'ID')->setReadonly(true),
-                AdminFormElement::number('send_count', 'Send count'),
+                AdminFormElement::number('send_count', 'Send count')->setDefaultValue(0)->required(),
                 AdminFormElement::checkbox('active', 'Active'),
                 AdminFormElement::text('name', 'Name')->required(),
                 AdminFormElement::image('image', 'Image')->required()
